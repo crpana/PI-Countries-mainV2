@@ -1,5 +1,4 @@
 const axios = require('axios');
-const e = require('express');
 const { Router } = require('express');
 const { Country, Activity } = require('../db');
 // Importar todos los routers;
@@ -14,7 +13,9 @@ const router = Router();
 
 const getApiInfo = async () => {
 
-    let dbCheck = await Country.findAll();
+    let dbCheck = await Country.findAll({
+        include:[{model:Activity}]
+    });
 
     if (!dbCheck.length) {
         try {
@@ -144,6 +145,20 @@ router.get('/countries/:id', async (req, res) => {
 
 })
 
+router.get('/actividades',async (req,res)=>{
+    const todosAll=await Country.findAll({
+        include:{
+            model:Activity
+        }
+    })
+    todosAll!==null?
+        res.status(200).json(todosAll):
+        res.status(404).json('No hay paises cargados')
+
+    
+})
+
+
 
 //POST /activities
 
@@ -164,6 +179,7 @@ router.post('/activities', async (req, res) => {
             difficulty,
             duration,
             season,
+            countries
         });
 
         nuevaActividad.addCountries(countriesDb)
@@ -176,6 +192,18 @@ router.post('/activities', async (req, res) => {
 
 
 });
+
+router.get('/activities',  async (req,res)=>{
+      
+    try{
+           const activities= await Activity.findAll();
+            return res.status(200).send(activities)
+         }catch(error){
+             return res.status(400).send(error);
+        }
+    
+})
+
 
 
 

@@ -36,10 +36,6 @@ module.exports = (sequelize) => {
     population: {
       type: DataTypes.INTEGER,
     },
-    // createInDb:{
-    //   type: DataTypes.BOOLEAN,
-    //   allowNull:false,
-    //   defaultValue:true,/    /todos lo que se cree tendran esta propiedad 
-    // },
+
   });
 };
