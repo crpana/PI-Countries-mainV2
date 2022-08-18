@@ -1,7 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from 'react-redux';
-import { setPagina, getCountries, filterCountriesByContinent, orderByCountryName, orderByPopulation, getActivity } from "../../redux/actions";
+import { setPagina, getCountries, } from "../../redux/actions";
 import { Link } from 'react-router-dom';
 
 import Paginado from "../Paginado/Paginado";
@@ -11,6 +11,8 @@ import Cards from "../Cards/Cards";
 import ContinentFilter from "../ContinentFilter/ContinentFilter";
 import PopulationFilter from "../PopulationFilter/PopulationFilter";
 import NameFilter from "../NameFilter/NameFilter";
+
+import styles from './home.module.css';
 
 export default function Home() {
     const dispatch = useDispatch();
@@ -49,8 +51,10 @@ export default function Home() {
 
     return (
         <div>
-            <Link to='/activities'>Agregar Actividad Turistica</Link>
-            <h3></h3>
+            <div >
+                <Link to='/activities'>Agregar Actividad Turistica</Link>
+            </div>
+
             <button onClick={e => { handleClick(e) }}>Volver a cargar paises</button>
 
 

@@ -19,7 +19,6 @@ export default function ActivityFilter() {
         e.preventDefault()
         setPagina(1)
         dispatch(filtroActividad(e.target.value))
-        // console.log(aaaa);
         console.log(e.target.value);
     }
 

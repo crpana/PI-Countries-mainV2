@@ -18,17 +18,18 @@ export default function CountryDetail() {
 
     return (
 
-        <div className={styl.detail}>
+        <div className={styl.containerPrincipal}>
+
             {
                 Object.keys(miPais).length > 0 ?
 
 
-                    <div >
+                    <div  className={styl.pais}>
                         {/* <div className={styl.imgContainer}>
                             <img src={miPais.flag} />
                         </div> */}
 
-                        <div className={styl.countryContainer}>
+                        <div>
                             <img src={miPais.flag} />
                             <h2>{miPais.id}</h2>
                             <h3>Pais: {miPais.name}</h3>
@@ -68,14 +69,18 @@ export default function CountryDetail() {
                     :
                     <p>loading...</p>
 
+                    
+
 
 
             }
-            <div>
+            
+            <div  className={styl.headerBoton}>
                 <Link to='/home'>
-                    <button>Back to Home</button>
+                    <button className={styl.boton}>Back to Home</button>
                 </Link>
             </div>
+
         </div>
     )
 

@@ -6,10 +6,17 @@ import { Link } from "react-router-dom";
 import { postActivity, getCountries } from "../../redux/actions";
 
 function Validar(input) {
+    var regNombre = /[A-Za-z0-9]+/g;
+
     var error = {};
     if (!input.name) {
         error.name = 'ingrese nombre de actividad turistica';
-    } else if (input.difficulty < 1 || input.difficulty > 5) {   // [1,5]
+
+    } else if (!/^[a-zA-ZÀ-ÿ\u00f1\u00d1\s]+$/.test(input.name)) {
+        error.name = "No se permite numero o caracteres especiales";
+    }
+
+    else if (input.difficulty < 1 || input.difficulty > 5) {   // [1,5]
         error.difficulty = 'ingrese valores entre 1 y 5';
     } else if (input.duration < 0) {
         error.duration = 'ingrese un tiempo mayor o igual a cero';
@@ -17,7 +24,8 @@ function Validar(input) {
     return error;
 
 }
-
+// else if(){
+//     error.name='nombre solo con letras' 
 
 export default function CreateActivity() {
     const dispatch = useDispatch();
@@ -84,15 +92,6 @@ export default function CreateActivity() {
 
 
 
-    function handleDelete(e) {
-        setInput({
-            ...input,
-            countries: input.countries.filter(pais => pais.name !== e)
-        })
-    }
-
-
-
     return (
         <div>
             <Link to='/home'>
@@ -126,7 +125,7 @@ export default function CreateActivity() {
 
 
                 <div>
-                    <label>Duracion </label>
+                    <label>Duración </label>
                     <input type='number' value={input.duration} name='duration' onChange={handleChange}></input>
                     {
                         error.duration && (
@@ -152,28 +151,24 @@ export default function CreateActivity() {
                         ))
                     }
                 </select>
-            
+
                 <div>
                     {
-                        input.countries.map(p =>p+', ')
+                        input.countries.map(p => p + ', ')
                     }
                 </div>
 
 
 
                 <div>
-                    <button type="submit">Crear Actividad</button>
+                    {
+                        error.name || !input.difficulty || !input.duration || !input.countries?
+                            <button type="submit" disabled={true}>Crear Actividad1</button> :
+                            <button type="submit" disabled={false}>Crear Actividad2</button>
+                    }
+
                 </div>
-
-
-
-
             </form>
-
-
-
-
-
         </div>
     );
 

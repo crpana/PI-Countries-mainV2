@@ -63,30 +63,13 @@ const getApiInfo = async () => {
 
 
 
-const getDbInfo = async () => {
-    return await Country.findAll({
-        include: {
-            model: Activity,
-            attributes: ['name', 'difficulty', 'duration', 'season'],
-            through: {
-                attributes: [],
-            }
-
-        }
-    });
-
-};
-
-
-
 //GET son dos rutas en una /countries y /countries?name='..'
 router.get('/countries', async (req, res) => {
     let { queryName } = req.query;
     const allCountry = await getApiInfo();
 
     if (queryName) {
-        //obtener los paises que coincidan con el nombre pasado como query
-        //si no coincide ninguno mostrar error
+   
         let paises = await allCountry.filter(p => p.name.toLowerCase() === queryName.toLowerCase());
 
         if (paises.length > 0) {
@@ -98,7 +81,7 @@ router.get('/countries', async (req, res) => {
         return res.status(200).json(allCountry);
     }
 
-    // return res.status(200).send(allCountry);
+   
 
 })
 
@@ -115,19 +98,9 @@ router.get('/countries', async (req, res) => {
 
 //get /countries/{idPais}
 router.get('/countries/:id', async (req, res) => {
-    // Obtener el detalle de un país en particular
-    // Debe traer solo los datos pedidos en la ruta de detalle de país
-    // Incluir los datos de las actividades turísticas correspondientes
+
     let { id } = req.params;
-    // let allCountry = await getApiInfo();
-    // if (id) {
-    //     let countryId = await allCountry.filter(e => e.id.toUpperCase() === id.toUpperCase());
-    //     if (countryId.length > 0) {
-    //         return res.status(200).json(countryId)
-    //     } else {
-    //         return res.status(404).send('No se pudo encontrar el pais.')
-    //     }
-    // }
+ 
     try {
         const pais = await Country.findByPk(id.toUpperCase(), {
             include: {
@@ -163,8 +136,7 @@ router.get('/actividades',async (req,res)=>{
 //POST /activities
 
 router.post('/activities', async (req, res) => {
-    // Recibe los datos recolectados desde el formulario controlado de la ruta de creación de actividad turística por body
-    // Crea una actividad turística en la base de datos, relacionada con los países correspondientes
+   
     let { countries, name, difficulty, duration, season } = req.body;
 
     try {
@@ -173,7 +145,7 @@ router.post('/activities', async (req, res) => {
                 name:countries,
             }
         });
-
+        
         let nuevaActividad = await Activity.create({
             name,
             difficulty,
@@ -181,8 +153,8 @@ router.post('/activities', async (req, res) => {
             season,
             countries
         });
-
         nuevaActividad.addCountries(countriesDb)
+        res.json(nuevaActividad)
         return res.status(200).json('Se creo la actividad.');
 
 
